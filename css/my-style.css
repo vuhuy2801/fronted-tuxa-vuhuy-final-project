@@ -1,0 +1,48 @@
+.trand-right-img img {
+  width: 120px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.trend-bottom-img {
+  width: 100%;
+  height: 200px;
+}
+
+.trend-bottom-img img,
+.weekly-img img,
+.what-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.weekly-single{
+    height: 370px;
+}
+
+.weekly-caption {
+  background-color: rgba(255, 255, 255, 0.76) !important;
+}
+
+.single-what-news, .single-recent{
+  height: 320px;
+}
+
+.single-recent{
+  width: 370px;
+}
+
+.what-img,
+ .weekly-img {
+  width: 100%;
+  height: 100%;
+}
+
+.whats-news-area .container{
+    border-bottom: 1px solid #eeeeee;
+}
+
+.recent-articles{
+    padding: 50px 0px;
+}
