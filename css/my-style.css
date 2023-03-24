@@ -46,3 +46,15 @@
 .recent-articles{
     padding: 50px 0px;
 }
+
+h4 a{
+  overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+           line-clamp: 2; 
+   -webkit-box-orient: vertical;
+}
+
+.publishDate{
+    
+}
