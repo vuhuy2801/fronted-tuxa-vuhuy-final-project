@@ -30,25 +30,13 @@ elmNextPages.addEventListener('click', function () {
     if (elmCurrentPage.text == lastPage) {
         return;
     }
-    if (elmCurrentPage.text !== 1) {
-        elmPreviousPages.classList.add("right-arrow");
-    }
     getPaginationOfRecentArticles(++elmCurrentPage.text);
-    if (elmCurrentPage.text == lastPage) {
-        elmNextPages.classList.remove("right-arrow");
-    }
 });
 elmPreviousPages.addEventListener('click', function () {
     if (elmCurrentPage.text == 1) {
         return;
     }
-    if (elmCurrentPage.text !== lastPage) {
-        elmNextPages.classList.add("right-arrow");
-    }
     getPaginationOfRecentArticles(--elmCurrentPage.text);
-    if (elmCurrentPage.text == 1) {
-        elmPreviousPages.classList.remove("right-arrow");
-    }
 });
 // end event next & previous pages
 
@@ -324,6 +312,7 @@ function getPaginationOfRecentArticles(page) {
             renderRecentArticles(response.data.data);
             elmCurrentPage.innerText = response.data.meta.current_page;
             lastPage = response.data.meta.last_page;
+            statusButton();
         })
         .catch((error) => {
             console.log(error);
@@ -345,6 +334,20 @@ function renderRecentArticles(data) {
         </div>`; // render articles
     }
     recentArticles.innerHTML = str;
+}
+function statusButton(){
+    if (elmCurrentPage.text > 1) {
+        elmPreviousPages.classList.add("right-arrow");
+    }
+    if (elmCurrentPage.text == lastPage) {
+        elmNextPages.classList.remove("right-arrow");
+    }
+    if (elmCurrentPage.text < lastPage) {
+        elmNextPages.classList.add("right-arrow");
+    }
+    if (elmCurrentPage.text == 1) {
+        elmPreviousPages.classList.remove("right-arrow");
+    }
 }
 // end api & Pagination for Recent Articles
 
