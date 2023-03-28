@@ -47,7 +47,7 @@
     padding: 50px 0px;
 }
 
-h4 a{
+h4 a, .media-body a{
   overflow: hidden;
    display: -webkit-box;
    -webkit-line-clamp: 2; /* number of lines to show */
@@ -77,4 +77,11 @@ h4 a{
 .pagination-area .page-item.active .page-link::before {
   width: 30px;
   left: 5px;
+}
+
+
+.media.post_item img{
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
