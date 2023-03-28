@@ -55,6 +55,26 @@ h4 a{
    -webkit-box-orient: vertical;
 }
 
-.publishDate{
-    
+.description{
+  overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 3; /* number of lines to show */
+           line-clamp: 3; 
+   -webkit-box-orient: vertical;
+}
+
+
+
+.description p{
+  font-size: 13px;
+  line-height: normal;
+}
+
+#paginationList{
+  display: contents;
+}
+
+.pagination-area .page-item.active .page-link::before {
+  width: 30px;
+  left: 5px;
 }

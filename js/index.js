@@ -25,8 +25,6 @@ const API_NEWS = axios.create({
 });
 
 
-
-
 //event next & previous pages
 elmNextPages.addEventListener('click', function () {
     if (elmCurrentPage.text == lastPage) {
@@ -210,11 +208,12 @@ function renderWhatNewsCard(data) {
 function renderWhatNewsArticles(articles) {
     let str = "";
     for (let i = 0; i < articles.length; i++) {
-        str += ` <div class="col-lg-6 col-md-6">
-        <div class="single-what-news mb-100">
-            <div class="what-img">
-                <img src="${articles[i].thumb}" alt="">
-            </div>
+        str += ` 
+        <div class="col-lg-6 col-md-6">
+            <div class="single-what-news mb-100">
+                <div class="what-img">
+                    <img src="${articles[i].thumb}" alt="">
+                </div>
             <div class="what-cap">
                 <h4><a href="#">${articles[i].title}</a></h4>
             </div>
@@ -307,15 +306,16 @@ function renderNavigation(data) {
     }
     for (let i = 0; i < data.length; i++) {
         if (i < 4) {
-            strMenu += `<li><a href="${data[i].slug}.html">${data[i].name}</a></li>`; // main menu
+            strMenu += `<li><a href="categori.html?id=${data[i].id}&page=1">${data[i].name}</a></li>`; // main menu
         } else {
-            strSubMenu += `<li><a href="${data[i].slug}.html">${data[i].name}</a></li>`; // sub menu
+            strSubMenu += `<li><a href="categori.html?id=${data[i].id}&page=1">${data[i].name}</a></li>`; // sub menu
         }
     }
     strSubMenu += `</ul>
     </li>`;
     elmNavigation.innerHTML = strMenu + strSubMenu;
 }
+
 
 function timeAgo(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
