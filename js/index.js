@@ -335,7 +335,7 @@ function renderRecentArticles(data) {
     }
     recentArticles.innerHTML = str;
 }
-function statusButton(){
+function statusButton() {
     if (elmCurrentPage.text > 1) {
         elmPreviousPages.classList.add("right-arrow");
     }

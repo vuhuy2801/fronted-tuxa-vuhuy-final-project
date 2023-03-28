@@ -7,7 +7,7 @@ let elmCategoriName = document.querySelector("#categoriName h3");
 let lastPage;
 
 const REGEX = /^[1-9]\d*$/;
-const cateGetAllApi = "/categories_news?limit=100";
+const CATE_GET_ALL_API = "/categories_news?limit=100";
 const API_NEWS = axios.create({
     baseURL: 'https://apiforlearning.zendvn.com/api/v2',
     headers: { 'X-Custom-Header': 'foobar' }
@@ -15,22 +15,21 @@ const API_NEWS = axios.create({
 const CURRENT_URL = new URL(window.location);
 const VALUE_SEARCH_PARAMS = new URLSearchParams(window.location.search);
 const CATE_ID = parseInt(VALUE_SEARCH_PARAMS.get("id"));
-const PAGES = parseInt(VALUE_SEARCH_PARAMS.get("page")); 
+const PAGES = parseInt(VALUE_SEARCH_PARAMS.get("page"));
 const GET_ARTICLES_BY_CATE = `categories_news/${CATE_ID}/articles`;
 
 let currentPage = PAGES;
 
-// // Kiểm tra giá trị của tham số id có hợp lệ hay không
+// Kiểm tra giá trị của tham số id có hợp lệ hay không
 if (!isValidId() || !isVaildPage()) {
-  // Nếu giá trị không hợp lệ, điều hướng URL về trang index.html
-  window.location.href = "/index.html";
+    // Nếu giá trị không hợp lệ, điều hướng URL về trang index.html
+    window.location.href = "/index.html";
 }
-
 function isValidId() {
-  return REGEX.test(CATE_ID);
+    return REGEX.test(CATE_ID);
 }
 
-function isVaildPage(){
+function isVaildPage() {
     return REGEX.test(PAGES);
 }
 
@@ -54,9 +53,9 @@ elmPreviousPages.addEventListener('click', function () {
 
 // end event
 
-// call api & render navigation
+// start call api & render navigation
 function getNavigation() {
-    API_NEWS.get(cateGetAllApi)
+    API_NEWS.get(CATE_GET_ALL_API)
         .then((response) => {
             renderNavigation(response.data.data);
             /* 2. slick Nav */
@@ -69,27 +68,6 @@ function getNavigation() {
                     openedSymbol: '-'
                 });
             };
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-// call api & Pagination for Recent Articles
-function getPaginationOfRecentArticles(page) {
-    API_NEWS.get(GET_ARTICLES_BY_CATE, {
-            params: {
-                limit: 6,
-                page: page,
-            }
-        },
-        )
-        .then((response) => {
-            elmCategoriName.innerText = response.data.data[0].category.name;
-            renderRecentArticles(response.data.data);
-            lastPage = response.data.meta.last_page;
-            renderPaginationButton(page);
-            statusButton();
         })
         .catch((error) => {
             console.log(error);
@@ -113,7 +91,28 @@ function renderNavigation(data) {
     </li>`;
     elmNavigation.innerHTML = strMenu + strSubMenu;
 }
+// end call api & render navigation
 
+// call api & Pagination for Recent Articles
+function getPaginationOfRecentArticles(page) {
+    API_NEWS.get(GET_ARTICLES_BY_CATE, {
+        params: {
+            limit: 6,
+            page: page,
+        }
+    },
+    )
+        .then((response) => {
+            elmCategoriName.innerText = response.data.data[0].category.name;
+            renderRecentArticles(response.data.data);
+            lastPage = response.data.meta.last_page;
+            renderPaginationButton(page);
+            statusButton();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 function renderRecentArticles(data) {
     let str = "";
     for (let i = 0; i < data.length; i++) {
@@ -123,7 +122,7 @@ function renderRecentArticles(data) {
                 <img src="${data[i].thumb}" alt="">
             </div>
             <div class="what-cap">
-                <h4><a href="#">${data[i].title}</a></h4>
+                <h4><a href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
                 <div class="description">
                 <p>${data[i].description}</p>
                 </div>
@@ -148,20 +147,20 @@ function renderPaginationButton(indexPage) {
     let startindex, endindex = 0;
     let str = ``;
     if (indexPage >= 6) {
-        str += samplePageItem(1,"");
+        str += samplePageItem(1, "");
         str += morePage;
     }
     if (indexPage + 2 < lastPage && indexPage - 2 > 1) {
-       
+
         startindex = indexPage - 2;
         endindex = indexPage + 2;
         for (let i = startindex; i <= endindex; i++) {
             if (i === indexPage) {
                 str += samplePageItem(i, "active");
-            } else{
-                str += samplePageItem(i,"");;
+            } else {
+                str += samplePageItem(i, "");;
             }
-            
+
         }
         if (indexPage <= lastPage - 6) {
             str += morePage;
@@ -171,28 +170,28 @@ function renderPaginationButton(indexPage) {
         for (let i = lastPage - 5; i <= lastPage; i++) {
             if (i === indexPage) {
                 str += samplePageItem(i, "active");
-            } else{
-                str += samplePageItem(i,"");
+            } else {
+                str += samplePageItem(i, "");
             }
-            
+
         }
     } else {
         for (let i = 1; i <= 5; i++) {
             if (i === indexPage) {
                 str += samplePageItem(i, "active");
-            } else{
-                str += samplePageItem(i,"");;
+            } else {
+                str += samplePageItem(i, "");;
             }
-            
+
         }
         str += morePage;
-        str += samplePageItem(lastPage,"");
+        str += samplePageItem(lastPage, "");
     }
 
     elmPaginationList.innerHTML = str;
 
 }
-function statusButton(){
+function statusButton() {
     if (currentPage > 1) {
         elmPreviousPages.classList.add("right-arrow");
     }
@@ -206,6 +205,10 @@ function statusButton(){
         elmPreviousPages.classList.remove("right-arrow");
     }
 }
+// end call api & Pagination for Recent Articles
+
+
+
 
 getNavigation();
 getPaginationOfRecentArticles(PAGES);

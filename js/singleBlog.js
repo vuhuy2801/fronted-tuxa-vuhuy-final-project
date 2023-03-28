@@ -19,11 +19,11 @@ const GET_RELATED = `/articles/${ARTICLES_ID}/related?limit=4`;
 if (!isValidId()) {
     // Nếu giá trị không hợp lệ, điều hướng URL về trang index.html
     window.location.href = "/index.html";
-  }
+}
 
-  function isValidId() {
+function isValidId() {
     return REGEX.test(ARTICLES_ID);
-  }
+}
 
 
 // start call api & render navigation
@@ -79,8 +79,8 @@ function getPostContent() {
             postError();
         });
 }
-function renderPostContent(data){
-    let sampleHeadImage = (links) =>{
+function renderPostContent(data) {
+    let sampleHeadImage = (links) => {
         return `
              <div class="feature-img">
                 <img class="img-fluid" src="${links}" alt="">
@@ -92,7 +92,7 @@ function renderPostContent(data){
     //         <h3>${tittle}</h3>
     //     </div>`;
     // }
-    let sampleMainDetails = (title,author,content) => {
+    let sampleMainDetails = (title, author, content) => {
         return `
         <div class="blog_details">
                  <h2>${title}
@@ -106,11 +106,11 @@ function renderPostContent(data){
                 </div>   
         </div>`;
     }
-    let str = sampleHeadImage(data.thumb) +sampleMainDetails(data.title,data.author,data.content);
+    let str = sampleHeadImage(data.thumb) + sampleMainDetails(data.title, data.author, data.content);
     elmPostContent.innerHTML = str;
 }
 
-function postError(){
+function postError() {
     elmPostContent.innerHTML = "<h4>không có bài viết này</h4>";
 }
 // end render details content 
@@ -125,7 +125,7 @@ function getPostRelated() {
             console.log(error);
         });
 }
-function renderPostRelated(data){
+function renderPostRelated(data) {
     let samplePostItem = (links, title, id, date) => {
         return `
         <div class="media post_item">
@@ -137,11 +137,11 @@ function renderPostRelated(data){
                               <p>${timeAgo(date)}</p>
                            </div>
                         </div>
-        `; 
+        `;
     }
     let str = "";
-    for(let i = 0;  i < data.length; i++){
-        str += samplePostItem(data[i].thumb,data[i].title,data[i].id,new Date(data[i].publish_date));
+    for (let i = 0; i < data.length; i++) {
+        str += samplePostItem(data[i].thumb, data[i].title, data[i].id, new Date(data[i].publish_date));
     }
     elmPostRelated.innerHTML = str;
 }
@@ -151,34 +151,34 @@ function renderPostRelated(data){
 
 function timeAgo(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
-  
+
     let interval = Math.floor(seconds / 31536000);
     if (interval >= 1) {
-      return interval + " năm" + (interval === 1 ? "" : "") + " trước";
+        return interval + " năm" + (interval === 1 ? "" : "") + " trước";
     }
-  
+
     interval = Math.floor(seconds / 2592000);
     if (interval >= 1) {
-      return interval + " tháng" + (interval === 1 ? "" : "") + " trước";
+        return interval + " tháng" + (interval === 1 ? "" : "") + " trước";
     }
-  
+
     interval = Math.floor(seconds / 86400);
     if (interval >= 1) {
-      return interval + " ngày" + (interval === 1 ? "" : "") + " trước";
+        return interval + " ngày" + (interval === 1 ? "" : "") + " trước";
     }
-  
+
     interval = Math.floor(seconds / 3600);
     if (interval >= 1) {
-      return interval + " giờ" + (interval === 1 ? "" : "") + " trước";
+        return interval + " giờ" + (interval === 1 ? "" : "") + " trước";
     }
-  
+
     interval = Math.floor(seconds / 60);
     if (interval >= 1) {
-      return interval + " phút" + (interval === 1 ? "" : "") + " trước";
+        return interval + " phút" + (interval === 1 ? "" : "") + " trước";
     }
-  
+
     return Math.floor(seconds) + " giây" + (Math.floor(seconds) === 1 ? "" : "") + " trước";
-  }
+}
 
 
 getPostRelated();

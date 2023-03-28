@@ -16,11 +16,11 @@ const GET_DETAILS = `/articles/${ARTICLES_ID}`;
 if (!isValidId()) {
     // Nếu giá trị không hợp lệ, điều hướng URL về trang index.html
     window.location.href = "/index.html";
-  }
+}
 
-  function isValidId() {
+function isValidId() {
     return REGEX.test(ARTICLES_ID);
-  }
+}
 
 
 // start call api & render navigation
@@ -76,14 +76,14 @@ function getDetailsContent() {
             detailsError();
         });
 }
-function renderDetailsContent(data){
-    let sampleHeadImage = (links) =>{
+function renderDetailsContent(data) {
+    let sampleHeadImage = (links) => {
         return `
             <div class="about-img">
                 <img src="${links}" alt="">
             </div>`;
     }
-    let sampleTittle = (tittle) =>{
+    let sampleTittle = (tittle) => {
         return `
         <div class="section-tittle mb-30 pt-30">
             <h3>${tittle}</h3>
@@ -95,11 +95,11 @@ function renderDetailsContent(data){
             ${content}
         </div>`;
     }
-    let str = sampleHeadImage(data.thumb) + sampleTittle(data.title)+sampleMainDetails(data.content);
+    let str = sampleHeadImage(data.thumb) + sampleTittle(data.title) + sampleMainDetails(data.content);
     elmDetailsContent.innerHTML = str;
 }
 
-function detailsError(){
+function detailsError() {
     elmDetailsContent.innerHTML = "<h4>không có bài viết này</h4>";
 }
 // end render details content 
