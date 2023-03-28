@@ -13,11 +13,11 @@ let elmCurrentPage = document.querySelector("#currentPage");
 let lastPage = 0;
 
 
-const cateGetAllApi = "/categories_news?limit=100";
-const articlesGetAll = "/articles?limit=10";
-const articlesGetMostViews = "/articles/popular?limit=5";
-const GetAllWithArticels = "/categories_news/articles?limit_cate=5&limit=4";
-const paginationOfArticles = "/articles?limit=6&page=";
+const CATE_GET_ALL_API = "/categories_news?limit=100";
+const ARTICLES_GET_ALL = "/articles?limit=10";
+const ARTICLES_GET_MOST_VIEW = "/articles/popular?limit=5";
+const GET_ALL_WITH_ARTICELS = "/categories_news/articles?limit_cate=5&limit=4";
+const PAGINATION_OF_ARTICLES = "/articles?limit=6&page=";
 
 const API_NEWS = axios.create({
     baseURL: 'https://apiforlearning.zendvn.com/api/v2',
@@ -25,7 +25,7 @@ const API_NEWS = axios.create({
 });
 
 
-//event next & previous pages
+//start event next & previous pages
 elmNextPages.addEventListener('click', function () {
     if (elmCurrentPage.text == lastPage) {
         return;
@@ -50,12 +50,12 @@ elmPreviousPages.addEventListener('click', function () {
         elmPreviousPages.classList.remove("right-arrow");
     }
 });
+// end event next & previous pages
 
 
-
-// call api & render navigation
+// start call api & render navigation
 function getNavigation() {
-    API_NEWS.get(cateGetAllApi)
+    API_NEWS.get(CATE_GET_ALL_API)
         .then((response) => {
             renderNavigation(response.data.data);
             /* 2. slick Nav */
@@ -74,9 +74,28 @@ function getNavigation() {
         });
 }
 
-// call api & render trendingNews
+function renderNavigation(data) {
+    let strMenu = `<li><a href="index.html">Trang chủ</a></li>`;
+    let strSubMenu = "";
+    if (data.length !== 4) {
+        strSubMenu = `<li><a href="#">Tin Khác</a><ul class="submenu">`;
+    }
+    for (let i = 0; i < data.length; i++) {
+        if (i < 4) {
+            strMenu += `<li><a href="categori.html?id=${data[i].id}&page=1">${data[i].name}</a></li>`; // main menu
+        } else {
+            strSubMenu += `<li><a href="categori.html?id=${data[i].id}&page=1">${data[i].name}</a></li>`; // sub menu
+        }
+    }
+    strSubMenu += `</ul>
+    </li>`;
+    elmNavigation.innerHTML = strMenu + strSubMenu;
+}
+// end call api & render navigation
+
+// start call api & render trendingNews
 function getTrendingNews() {
-    API_NEWS.get(articlesGetAll)
+    API_NEWS.get(ARTICLES_GET_ALL)
         .then((response) => {
             const data = response.data.data
             renderTrendingTop(data);
@@ -87,10 +106,57 @@ function getTrendingNews() {
             console.log(error);
         });
 }
+function renderTrendingTop(data) {
+    let articleObj = data[0];
+    let str = `<div class="trend-top-img">
+    <img src="${articleObj.thumb}" alt="">
+    <div class="trend-top-cap">
+        <a href="categori.html?id=${articleObj.category.id}&page=1"><span>${articleObj.category.name}</span></a>
+        <h2><a href="single-blog.html?id=${articleObj.id}">${articleObj.title}</a></h2>
+    </div>
+    </div>`;
+    elmTrendingTop.innerHTML = str;
+}
 
-// call api & render MostViews
+function renderTrendingBottom(data) {
+    let str = "";
+    for (let i = 1; i < 4; i++) {
+        str += `<div class="col-lg-4">
+        <div class="single-bottom mb-35">
+            <div class="trend-bottom-img mb-30">
+                <img src="${data[i].thumb}" alt="">
+            </div>
+            <div class="trend-bottom-cap">
+            <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
+                <h4><a href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
+            </div>
+        </div>
+        </div>`;
+    }
+    elmTrendingBottom.innerHTML = str;
+
+}
+function renderTrendingRightContent(data) {
+    let str = "";
+    for (let i = 5; i < data.length; i++) {
+        str += ` <div class="trand-right-single d-flex">
+                            <div class="trand-right-img">
+                                <img src="${data[i].thumb}" alt="">
+                            </div>
+                            <div class="trand-right-cap">
+                            <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
+                                <h4><a title="${data[i].title}" href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
+                            </div>
+                    </div>`;
+    }
+    elmtrendingRightContent.innerHTML = str;
+}
+
+// end call api & render trendingNews
+
+// start call api & render MostViews
 function getMostViews() {
-    API_NEWS.get(articlesGetMostViews)
+    API_NEWS.get(ARTICLES_GET_MOST_VIEW)
         .then((response) => {
             renderArticleMostViews(response.data.data);
             //add animation 
@@ -139,10 +205,59 @@ function getMostViews() {
             console.log(error);
         });
 }
+function renderArticleMostViews(data) {
+    let str = "";
+    let date;
+    for (let i = 0; i < data.length; i++) {
+        date = new Date(data[i].publish_date);
+        str += `<div class="weekly-single active">
+                                <div class="weekly-img">
+                                    <img src="${data[i].thumb}" alt="">
+                                </div>
+                                <div class="weekly-caption">
+                                <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
+                                    <span class="publishDate">${timeAgo(date)}</span>
+                                    <h4><a href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
+                                </div>
+                            </div>`;
+    }
+    elmMostViews.innerHTML = str;
+}
+function timeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
 
-// call api & render What news 
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) {
+        return interval + " năm" + (interval === 1 ? "" : "") + " trước";
+    }
+
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) {
+        return interval + " tháng" + (interval === 1 ? "" : "") + " trước";
+    }
+
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) {
+        return interval + " ngày" + (interval === 1 ? "" : "") + " trước";
+    }
+
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) {
+        return interval + " giờ" + (interval === 1 ? "" : "") + " trước";
+    }
+
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) {
+        return interval + " phút" + (interval === 1 ? "" : "") + " trước";
+    }
+
+    return Math.floor(seconds) + " giây" + (Math.floor(seconds) === 1 ? "" : "") + " trước";
+}
+// end call api & render MostViews
+
+// start call api & render What news 
 function getWhatNews() {
-    API_NEWS.get(GetAllWithArticels)
+    API_NEWS.get(GET_ALL_WITH_ARTICELS)
         .then((response) => {
             const data = response.data.data;
             renderWhatNewsNav(data);
@@ -152,38 +267,6 @@ function getWhatNews() {
             console.log(error);
         });
 }
-
-
-// call api & Pagination for Recent Articles
-function getPaginationOfRecentArticles(page) {
-    API_NEWS.get(paginationOfArticles + page)
-        .then((response) => {
-            renderRecentArticles(response.data.data);
-            elmCurrentPage.innerText = response.data.meta.current_page;
-            lastPage = response.data.meta.last_page;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-function renderRecentArticles(data) {
-    let str = "";
-    for (let i = 0; i < data.length; i++) {
-        str += ` 
-        <div class="single-recent mb-100 ">
-            <div class="what-img">
-                <img src="${data[i].thumb}" alt="">
-            </div>
-            <div class="what-cap">
-            <a href="${data[i].category.slug}.html"><span class="color1">${data[i].category.name}</span></a>
-                <h4><a href="#">${data[i].title}</a></h4>
-            </div>
-        </div>`; // render articles
-    }
-    recentArticles.innerHTML = str;
-}
-
 function renderWhatNewsCard(data) {
     let cards = `<div class="tab-pane fade show active" id="${data[0].slug}" role="tabpanel" aria-labelledby="${data[0].slug}-tab">           
                     <div class="whats-news-caption">
@@ -215,7 +298,7 @@ function renderWhatNewsArticles(articles) {
                     <img src="${articles[i].thumb}" alt="">
                 </div>
             <div class="what-cap">
-                <h4><a href="#">${articles[i].title}</a></h4>
+                <h4><a href="single-blog.html?id=${articles[i].id}">${articles[i].title}</a></h4>
             </div>
         </div>
     </div>`; // render articles
@@ -231,123 +314,49 @@ function renderWhatNewsNav(data) {
     elmNavTabsWhatNews.innerHTML = str;
 }
 
-function renderArticleMostViews(data) {
+// end call api & render What news 
+
+
+// call api & Pagination for Recent Articles
+function getPaginationOfRecentArticles(page) {
+    API_NEWS.get(PAGINATION_OF_ARTICLES + page)
+        .then((response) => {
+            renderRecentArticles(response.data.data);
+            elmCurrentPage.innerText = response.data.meta.current_page;
+            lastPage = response.data.meta.last_page;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+function renderRecentArticles(data) {
     let str = "";
-    let date;
     for (let i = 0; i < data.length; i++) {
-        date = new Date(data[i].publish_date);
-        str += `<div class="weekly-single active">
-                                <div class="weekly-img">
-                                    <img src="${data[i].thumb}" alt="">
-                                </div>
-                                <div class="weekly-caption">
-                                <a href="${data[i].category.slug}.html"><span class="color1">${data[i].category.name}</span></a>
-                                    <span class="publishDate">${timeAgo(date)}</span>
-                                    <h4><a href="#">${data[i].title}</a></h4>
-                                </div>
-                            </div>`;
-    }
-    elmMostViews.innerHTML = str;
-
-}
-
-function renderTrendingTop(data) {
-    let articleObj = data[0];
-    let str = `<div class="trend-top-img">
-    <img src="${articleObj.thumb}" alt="">
-    <div class="trend-top-cap">
-        <a href="${articleObj.category.slug}.html"><span>${articleObj.category.name}</span></a>
-        <h2><a href="details.html">${articleObj.title}</a></h2>
-    </div>
-    </div>`;
-    elmTrendingTop.innerHTML = str;
-}
-
-function renderTrendingBottom(data) {
-    let str = "";
-    for (let i = 1; i < 4; i++) {
-        str += `<div class="col-lg-4">
-        <div class="single-bottom mb-35">
-            <div class="trend-bottom-img mb-30">
+        str += ` 
+        <div class="single-recent mb-100 ">
+            <div class="what-img">
                 <img src="${data[i].thumb}" alt="">
             </div>
-            <div class="trend-bottom-cap">
-            <a href="${data[i].category.slug}.html"><span class="color1">${data[i].category.name}</span></a>
-                <h4><a href="details.html">${data[i].title}</a></h4>
+            <div class="what-cap">
+            <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
+                <h4><a href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
             </div>
-        </div>
-        </div>`;
+        </div>`; // render articles
     }
-    elmTrendingBottom.innerHTML = str;
-
+    recentArticles.innerHTML = str;
 }
-function renderTrendingRightContent(data) {
-    let str = "";
-    for (let i = 5; i < data.length; i++) {
-        str += ` <div class="trand-right-single d-flex">
-                            <div class="trand-right-img">
-                                <img src="${data[i].thumb}" alt="">
-                            </div>
-                            <div class="trand-right-cap">
-                            <a href="${data[i].category.slug}.html"><span class="color1">${data[i].category.name}</span></a>
-                                <h4><a title="${data[i].title}"href="details.html">${data[i].title}</a></h4>
-                            </div>
-                    </div>`;
-    }
-    elmtrendingRightContent.innerHTML = str;
-}
+// end api & Pagination for Recent Articles
 
 
-function renderNavigation(data) {
-    let strMenu = `<li><a href="index.html">Trang chủ</a></li>`;
-    let strSubMenu = "";
-    if (data.length !== 4) {
-        strSubMenu = `<li><a href="#">Tin Khác</a><ul class="submenu">`;
-    }
-    for (let i = 0; i < data.length; i++) {
-        if (i < 4) {
-            strMenu += `<li><a href="categori.html?id=${data[i].id}&page=1">${data[i].name}</a></li>`; // main menu
-        } else {
-            strSubMenu += `<li><a href="categori.html?id=${data[i].id}&page=1">${data[i].name}</a></li>`; // sub menu
-        }
-    }
-    strSubMenu += `</ul>
-    </li>`;
-    elmNavigation.innerHTML = strMenu + strSubMenu;
-}
 
 
-function timeAgo(date) {
-    const seconds = Math.floor((new Date() - date) / 1000);
-  
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) {
-      return interval + " năm" + (interval === 1 ? "" : "") + " trước";
-    }
-  
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) {
-      return interval + " tháng" + (interval === 1 ? "" : "") + " trước";
-    }
-  
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) {
-      return interval + " ngày" + (interval === 1 ? "" : "") + " trước";
-    }
-  
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1) {
-      return interval + " giờ" + (interval === 1 ? "" : "") + " trước";
-    }
-  
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1) {
-      return interval + " phút" + (interval === 1 ? "" : "") + " trước";
-    }
-  
-    return Math.floor(seconds) + " giây" + (Math.floor(seconds) === 1 ? "" : "") + " trước";
-  }
-  
+
+
+
+
+
+
 
 getNavigation();
 getTrendingNews();

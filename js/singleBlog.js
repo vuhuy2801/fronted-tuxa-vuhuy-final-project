@@ -1,6 +1,8 @@
 let elmNavigation = document.querySelector("#navigation");
 let elmPostContent = document.querySelector("#postContent");
-let elmPostRelated = document.querySelector("#postRelated")
+let elmPostRelated = document.querySelector("#postRelated");
+
+
 const cateGetAllApi = "/categories_news?limit=100";
 const API_NEWS = axios.create({
     baseURL: 'https://apiforlearning.zendvn.com/api/v2',
