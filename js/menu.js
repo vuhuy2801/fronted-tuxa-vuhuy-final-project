@@ -1,4 +1,14 @@
 let elmNavigation = document.querySelector("#navigation");
+let elmSearch = document.querySelector(".search-box form");
+let inputSearch = document.querySelector(".search-box form input");
+
+// search start
+elmSearch.addEventListener("submit", () => {
+    event.preventDefault();
+    window.location.href = "/search.html?keyword=" + encodeURIComponent(inputSearch.value) + "&page=1";
+});
+
+
 // start call api & render navigation
 function getNavigation() {
     API_NEWS.get(CATE_GET_ALL_API)
@@ -33,8 +43,11 @@ function renderNavigation(data) {
             strSubMenu += `<li><a href="categori.html?id=${data[i].id}&page=1">${data[i].name}</a></li>`; // sub menu
         }
     }
-    strSubMenu += `</ul>
-    </li>`;
+    strSubMenu += `</ul>   
+    </li><li><a href="favorite.html" class="favoriteNav">Bài viết yêu thích</a></li>`;
     elmNavigation.innerHTML = strMenu + strSubMenu;
 }
 // end call api & render navigation
+
+
+getNavigation();

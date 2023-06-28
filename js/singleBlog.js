@@ -1,8 +1,6 @@
 let elmPostContent = document.querySelector("#postContent");
 let elmPostRelated = document.querySelector("#postRelated");
 
-
-
 const REGEX = /^[1-9]\d*$/;
 const VALUE_SEARCH_PARAMS = new URLSearchParams(window.location.search);
 const ARTICLES_ID = parseInt(VALUE_SEARCH_PARAMS.get("id"));
@@ -105,35 +103,11 @@ function renderPostRelated(data) {
 
 
 function timeAgo(date) {
-    const seconds = Math.floor((new Date() - date) / 1000);
-
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) {
-        return interval + " năm" + (interval === 1 ? "" : "") + " trước";
-    }
-
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) {
-        return interval + " tháng" + (interval === 1 ? "" : "") + " trước";
-    }
-
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) {
-        return interval + " ngày" + (interval === 1 ? "" : "") + " trước";
-    }
-
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1) {
-        return interval + " giờ" + (interval === 1 ? "" : "") + " trước";
-    }
-
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1) {
-        return interval + " phút" + (interval === 1 ? "" : "") + " trước";
-    }
-
-    return Math.floor(seconds) + " giây" + (Math.floor(seconds) === 1 ? "" : "") + " trước";
-}
+    dayjs.extend(dayjs_plugin_relativeTime);
+    dayjs.locale("vi");
+    const customDate = dayjs(date);
+    return customDate.fromNow();
+  }
 
 
 getPostRelated();
