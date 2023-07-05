@@ -1,43 +1,32 @@
 let elmTrendingTop = document.querySelector(".trending-top");
 let elmTrendingBottom = document.querySelector(".trending-bottom .row");
-let elmtrendingRightContent = document.querySelector(".rightContent");
+let elmTrendingRightContent = document.querySelector(".rightContent");
 let elmMostViews = document.querySelector(".weekly-news-active");
 let elmNavTabsWhatNews = document.querySelector("#nav-tab");
 let elmNavTabContents = document.querySelector("#nav-tabContent");
 let elmRecentWrapper = document.querySelector(".recent-wrapper");
-let elmPreviousPages = document.querySelector("#previousPages");
-let elmNextPages = document.querySelector("#nextPages");
+let elmBtnLoadMore = document.querySelector("#btnLoadMore");
 let recentArticles = document.querySelector("#recentArticles");
 let elmCurrentPage = document.querySelector("#currentPage");
 let elmWidgetWeather = document.querySelector(".widget");
-let lastPage = 0;
+let elmRecentArticlesLoading = document.querySelector("#loadingRecentArticles");
+let countLoadMore = 0;
 
-//start event next & previous pages
-elmNextPages.addEventListener("click", function () {
-  if (elmCurrentPage.text == lastPage) {
-    return;
-  }
-  getPaginationOfRecentArticles(++elmCurrentPage.text)
+//start event loadmore Articles
+elmBtnLoadMore.addEventListener("click", function () {
+  countLoadMore++;
+  elmRecentArticlesLoading.classList.remove("d-none");
+  getPaginationOfRecentArticles(countLoadMore)
     .then((data) => {
-      pavoritePosts();
+      pavoritePosts(); // add event click heartbutton
+      elmRecentArticlesLoading.classList.add("d-none");
     })
     .catch((error) => {
       // Xử lý khi Promise bị từ chối
     });
 });
-elmPreviousPages.addEventListener("click", function () {
-  if (elmCurrentPage.text == 1) {
-    return;
-  }
-  getPaginationOfRecentArticles(--elmCurrentPage.text)
-    .then((data) => {
-      pavoritePosts();
-    })
-    .catch((error) => {
-      // Xử lý khi Promise bị từ chối
-    });
-});
-// end event next & previous pages
+
+// end loadmore Articles
 
 // start call api & render trendingNews
 function getTrendingNews() {
@@ -100,7 +89,7 @@ function renderTrendingRightContent(data) {
                             </div>
                     </div>`;
   }
-  elmtrendingRightContent.innerHTML = str;
+  elmTrendingRightContent.innerHTML = str;
 }
 
 // end call api & render trendingNews
@@ -265,9 +254,7 @@ function getPaginationOfRecentArticles(page) {
   return API_NEWS.get(PAGINATION_OF_ARTICLES + page)
     .then((response) => {
       renderRecentArticles(response.data.data);
-      elmCurrentPage.innerText = response.data.meta.current_page;
       lastPage = response.data.meta.last_page;
-      statusButton();
       return response;
     })
     .catch((error) => {
@@ -290,22 +277,9 @@ function renderRecentArticles(data) {
             </div>
         </div>`; // render articles
   }
-  recentArticles.innerHTML = str;
+  recentArticles.innerHTML += str;
 }
-function statusButton() {
-  if (elmCurrentPage.text > 1) {
-    elmPreviousPages.classList.add("right-arrow");
-  }
-  if (elmCurrentPage.text == lastPage) {
-    elmNextPages.classList.remove("right-arrow");
-  }
-  if (elmCurrentPage.text < lastPage) {
-    elmNextPages.classList.add("right-arrow");
-  }
-  if (elmCurrentPage.text == 1) {
-    elmPreviousPages.classList.remove("right-arrow");
-  }
-}
+
 // end api & Pagination for Recent Articles
 
 const promise1 = getTrendingNews();
@@ -316,6 +290,7 @@ getWeather();
 
 Promise.all([promise1, promise2, promise3, promise4])
   .then((results) => {
+    loadingEffect(true);
     pavoritePosts();
   })
   .catch((error) => {});

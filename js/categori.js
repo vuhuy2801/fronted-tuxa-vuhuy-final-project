@@ -182,4 +182,5 @@ function statusButton() {
 getPaginationOfRecentArticles(PAGES)
 .then((results) => {
   pavoritePosts();
+  loadingEffect(true);
 });

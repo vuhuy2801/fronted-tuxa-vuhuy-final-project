@@ -170,4 +170,5 @@ function highLight(text){
 search(PAGES)
 .then((results) => {
   pavoritePosts();
+  loadingEffect(true);
 });
