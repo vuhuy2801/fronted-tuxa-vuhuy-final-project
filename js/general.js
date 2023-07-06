@@ -56,6 +56,8 @@ function loadFavorite() {
   elmHeartList.forEach((element) => {
     if (favoritePostList.indexOf(parseInt(element.getAttribute("id"))) !== -1) {
       element.classList.add("active");
+    } else{
+      element.classList.remove("active");
     }
     updateFavorite();
   });

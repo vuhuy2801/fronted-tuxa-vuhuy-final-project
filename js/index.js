@@ -11,7 +11,7 @@ let elmCurrentPage = document.querySelector("#currentPage");
 let elmWidgetWeather = document.querySelector(".widget");
 let elmRecentArticlesLoading = document.querySelector("#loadingRecentArticles");
 let elmTrendingArea = document.querySelector(".trending-area");
-let countLoadMore = 0;
+let countLoadMore = 1;
 
 //start event loadmore Articles
 elmBtnLoadMore.addEventListener("click", function () {
@@ -33,24 +33,28 @@ elmBtnLoadMore.addEventListener("click", function () {
 elmTrendingArea.addEventListener("click", function (e) {
   if (e.target.tagName === "I") {
     clickHeartBtn(e.target);
+    loadFavorite();
   }
 });
 
 elmMostViews.addEventListener("click", function (e) {
   if (e.target.tagName === "I") {
     clickHeartBtn(e.target);
+    loadFavorite();
   }
 });
 
 elmNavTabContents.addEventListener("click", function (e) {
   if (e.target.tagName === "I") {
     clickHeartBtn(e.target);
+    loadFavorite();
   }
 });
 
 recentArticles.addEventListener("click", function (e) {
   if (e.target.tagName === "I") {
     clickHeartBtn(e.target);
+    loadFavorite();
   }
 });
 
@@ -207,7 +211,7 @@ function renderArticleMostViews(data) {
 
 // start call api & render What news
 function getWhatNews() {
-  return API_NEWS.get(GET_ALL_WITH_ARTICLES )
+  return API_NEWS.get(GET_ALL_WITH_ARTICLES)
     .then((response) => {
       const data = response.data.data;
       renderWhatNewsNav(data);
@@ -275,7 +279,7 @@ function renderWhatNewsNav(data) {
 // call api & Pagination for Recent Articles
 function getPaginationOfRecentArticles(page) {
   return API_NEWS.get(PAGINATION_OF_ARTICLES + page)
-    .then((response) => {
+    .then((response) => { 
       renderRecentArticles(response.data.data);
       lastPage = response.data.meta.last_page;
       return response;
