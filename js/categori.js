@@ -50,7 +50,7 @@ elmPreviousPages.addEventListener("click", function () {
 
 elmPaginationList.addEventListener("click", function (e) {
   if (e.target.tagName === "SPAN") {
-    if(currentPage === parseInt(e.target.getAttribute("data-page"))){
+    if (currentPage === parseInt(e.target.getAttribute("data-page"))) {
       return;
     }
     currentPage = parseInt(e.target.getAttribute("data-page"));
@@ -79,8 +79,8 @@ function getPaginationOfRecentArticles(page) {
     },
   })
     .then((response) => {
-      elmCategoriName.innerText,
-        (elmHeadTitle.innerHTML = response.data.data[0].category.name);
+      elmCategoriName.innerText = response.data.data[0].category.name;
+      elmHeadTitle.innerHTML = response.data.data[0].category.name;
       renderRecentArticles(response.data.data);
       lastPage = response.data.meta.last_page;
       renderPaginationButton(page);

@@ -59,12 +59,13 @@ function loadFavorite() {
     } else{
       element.classList.remove("active");
     }
-    updateFavorite();
   });
+  updateFavorite();
 }
 
 function updateFavorite(element, textStatus) {
   elmFavoriteNav = document.querySelector(".favoriteNav");
+  console.log(elmFavoriteNav);
   elmFavoriteNav.innerHTML = `Bài Viết Yêu Thích (${favoritePostList.length})`;
 
   if (element == undefined) {
