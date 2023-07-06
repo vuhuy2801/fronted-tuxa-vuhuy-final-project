@@ -309,7 +309,10 @@ const promise1 = getTrendingNews();
 const promise2 = getMostViews();
 const promise3 = getWhatNews();
 const promise4 = getPaginationOfRecentArticles(1);
-getWeather();
+getWeather()
+.then(function(data){
+  renderWidgetWeather(data);
+});
 
 Promise.all([promise1, promise2, promise3, promise4])
   .then((results) => {
@@ -318,37 +321,15 @@ Promise.all([promise1, promise2, promise3, promise4])
   })
   .catch((error) => {});
 
-function getWeather() {
-  axios
-    .get("https://jsonip.com/") // get ip client
-    .then(function (response) {
-      return response.data.ip;
-    })
-    .then(function (ip) {
-      axios
-        .get(
-          `http://api.weatherapi.com/v1/current.json?key=ecedadbfda3c4d2e88b92401231703&q=${ip}&aqi=no` // get weather in client
-        )
-        .then(function (response) {
-          renderWidgetWeather(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
+
 
 function renderWidgetWeather(data) {
   dayjs.locale("vi");
-  const customDate = dayjs(data.current.last_updated);
-  const formattedDate = customDate.format("dddd, DD/MM/YYYY");
-
+  const CUSTOM_DATE = dayjs(data.current.last_updated);
+  const FORMATTED_DATE = CUSTOM_DATE.format("dddd, DD/MM/YYYY");
   elmWidgetWeather.innerHTML = `
   <div class="left-panel panel">
-                  <div class="date">${formattedDate}</div>
+                  <div class="date">${FORMATTED_DATE}</div>
                   <div class="city">${data.location.name}</div>
                   <img class="condition-icon"
                   src="${data.current.condition.icon}"

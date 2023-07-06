@@ -167,3 +167,7 @@ div.right-panel
   margin-top: 35px;
   padding-left: 50px;
 }
+
+.header-info-left img{
+  width: 16px;
+}
