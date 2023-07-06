@@ -7,7 +7,7 @@ let elmHeadTitle = document.querySelector("head title");
 const CATE_GET_ALL_API = "/categories_news?limit=100";
 const ARTICLES_GET_ALL = "/articles?limit=10";
 const ARTICLES_GET_MOST_VIEW = "/articles/popular?limit=5";
-const GET_ALL_WITH_ARTICLES  = "/categories_news/articles?limit_cate=5&limit=4";
+const GET_ALL_WITH_ARTICLES = "/categories_news/articles?limit_cate=5&limit=4";
 const PAGINATION_OF_ARTICLES = "/articles?limit=6&page=";
 
 const API_NEWS = axios.create({
@@ -40,14 +40,14 @@ function clickHeartBtn(element) {
   if (element.classList.contains("active")) {
     favoritePostList.push(ID_ELEMENT);
     localStorage.setItem("favoritePosts", JSON.stringify(favoritePostList));
-    updateFavoriteNav();
+    updateFavorite(element, "Đã yêu thích bài viết: ");
   } else {
     const index = favoritePostList.indexOf(ID_ELEMENT);
     if (index !== -1) {
       favoritePostList.splice(index, 1);
     }
     localStorage.setItem("favoritePosts", JSON.stringify(favoritePostList));
-    updateFavoriteNav();
+    updateFavorite(element, "Đã bỏ thích bài viết: ");
   }
 }
 
@@ -57,13 +57,49 @@ function loadFavorite() {
     if (favoritePostList.indexOf(parseInt(element.getAttribute("id"))) !== -1) {
       element.classList.add("active");
     }
-    updateFavoriteNav();
+    updateFavorite();
   });
 }
 
-function updateFavoriteNav() {
+function updateFavorite(element, textStatus) {
   elmFavoriteNav = document.querySelector(".favoriteNav");
   elmFavoriteNav.innerHTML = `Bài Viết Yêu Thích (${favoritePostList.length})`;
+
+  if (element == undefined) {
+    return; // stop funtion when no need notication
+  }
+  let elmTitleArticles;
+  // notication state a pavorite articles
+  if (element.closest(".what-cap") !== null) {
+    elmTitleArticles = element.closest(".what-cap").querySelector("a.title");
+  } else if (element.closest(".weekly-caption") !== null) {
+    elmTitleArticles = element
+      .closest(".weekly-caption")
+      .querySelector("a.title");
+  } else if (element.closest(".trand-right-cap") !== null) {
+    elmTitleArticles = element
+      .closest(".trand-right-cap")
+      .querySelector("a.title");
+  } else if (element.closest(".trend-bottom-cap") !== null) {
+    elmTitleArticles = element
+      .closest(".trend-bottom-cap")
+      .querySelector("a.title");
+  } else if (element.closest(".trend-top-cap") !== null) {
+    elmTitleArticles = element.closest(".trend-top-cap").querySelector("h2 a");
+  }
+
+  Toastify({
+    text: textStatus + elmTitleArticles.innerText,
+    duration: 3000,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: "linear-gradient(to right, #ff4e50, #f9d423)",
+    },
+    onClick: function () {}, // Callback after click
+  }).showToast();
 }
 //  end favorite
 

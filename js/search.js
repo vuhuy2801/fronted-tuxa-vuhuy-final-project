@@ -91,7 +91,7 @@ function renderelmresultArticles(data) {
              <a href="categori.html?id=${
                data[i].category.id
              }&page=1"><span class="color1">${data[i].category.name}</span></a>
-                <h4><a href="single-blog.html?id=${data[i].id}">${highLight(
+                <h4><a class="title" href="single-blog.html?id=${data[i].id}">${highLight(
       data[i].title
     )}</a></h4>
                 <div class="description">

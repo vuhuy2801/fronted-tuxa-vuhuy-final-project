@@ -42,7 +42,7 @@ function renderRecentArticles(data) {
             </div>
             <div class="what-cap">
             <i class="iconHeart fa-solid fa-heart" id="${data[i].id}"></i>
-                <h4><a href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
+                <h4><a class="title" href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
                 <div class="description">
                 <p>${data[i].description}</p>
                 </div>

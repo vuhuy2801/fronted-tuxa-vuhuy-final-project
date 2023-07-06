@@ -96,7 +96,7 @@ function renderTrendingBottom(data) {
             <div class="trend-bottom-cap">
             <i class="iconHeart fa-solid fa-heart" id="${data[i].id}"></i>
             <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
-                <h4><a href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
+                <h4><a class="title" class="title" href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
             </div>
         </div>
         </div>`;
@@ -113,7 +113,7 @@ function renderTrendingRightContent(data) {
                             <div class="trand-right-cap">
                             <i class="iconHeart fa-solid fa-heart" id="${data[i].id}"></i>
                             <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
-                                <h4><a title="${data[i].title}" href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
+                                <h4><a class="title" class="title" title="${data[i].title}" href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
                             </div>
                     </div>`;
   }
@@ -194,7 +194,7 @@ function renderArticleMostViews(data) {
                                     <i class="iconHeart fa-solid fa-heart" id="${
                                       data[i].id
                                     }"></i>
-                                    <h4><a href="single-blog.html?id=${
+                                    <h4><a class="title" class="title" href="single-blog.html?id=${
                                       data[i].id
                                     }">${data[i].title}</a></h4>
                                 </div>
@@ -254,7 +254,7 @@ function renderWhatNewsArticles(articles) {
                 </div>
             <div class="what-cap">
             <i class="iconHeart fa-solid fa-heart" id="${articles[i].id}"></i>
-                <h4><a href="single-blog.html?id=${articles[i].id}">${articles[i].title}</a></h4>
+                <h4><a class="title" class="title" href="single-blog.html?id=${articles[i].id}">${articles[i].title}</a></h4>
             </div>
         </div>
     </div>`; // render articles
@@ -296,7 +296,7 @@ function renderRecentArticles(data) {
             <div class="what-cap">
             <i class="iconHeart fa-solid fa-heart" id="${data[i].id}"></i>
             <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
-                <h4><a href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
+                <h4><a class="title" class="title" href="single-blog.html?id=${data[i].id}">${data[i].title}</a></h4>
             </div>
         </div>`; // render articles
   }
