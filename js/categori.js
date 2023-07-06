@@ -65,7 +65,7 @@ function getPaginationOfRecentArticles(page) {
     },
   })
     .then((response) => {
-      elmCategoriName.innerText = response.data.data[0].category.name;
+      elmCategoriName.innerText, elmHeadTitle.innerHTML = response.data.data[0].category.name;
       renderRecentArticles(response.data.data);
       lastPage = response.data.meta.last_page;
       renderPaginationButton(page);

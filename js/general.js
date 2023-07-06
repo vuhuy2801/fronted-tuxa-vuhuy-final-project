@@ -2,6 +2,7 @@ let loadingListElm = document.querySelectorAll(".row.loadingEffect");
 let favoritePostList = JSON.parse(localStorage.getItem("favoritePosts"));
 let elmFavoriteNav;
 let elmHaderInfoLeft = document.querySelector(".header-info-left");
+let elmHeadTitle = document.querySelector("head title");
 
 const CATE_GET_ALL_API = "/categories_news?limit=100";
 const ARTICLES_GET_ALL = "/articles?limit=10";

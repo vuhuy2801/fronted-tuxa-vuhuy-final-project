@@ -22,6 +22,7 @@ function isValidId() {
 function getPostContent() {
   API_NEWS.get(GET_DETAILS)
     .then((response) => {
+      elmHeadTitle.innerHTML = response.data.data.title;
       renderPostContent(response.data.data);
     })
     .catch((error) => {
