@@ -106,11 +106,8 @@ function renderPostRelated(data) {
 
 // end render postRelated
 
-
 getPostRelated().then(() => {
   loadingEffect(true);
   updateFavoriteNav();
 });
 getPostContent();
-
-

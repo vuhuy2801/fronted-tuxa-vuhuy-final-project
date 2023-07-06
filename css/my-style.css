@@ -171,3 +171,7 @@ div.right-panel
 .header-info-left img{
   width: 16px;
 }
+
+.highlight{
+  background-color: gold;
+}

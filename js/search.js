@@ -11,7 +11,7 @@ const CURRENT_URL = new URL(window.location);
 const VALUE_SEARCH_PARAMS = new URLSearchParams(window.location.search);
 const KEYWORD = VALUE_SEARCH_PARAMS.get("keyword");
 const PAGES = parseInt(VALUE_SEARCH_PARAMS.get("page"));
-const REGEX_KEYWORD = new RegExp(KEYWORD, 'gi');
+const REGEX_KEYWORD = new RegExp(KEYWORD, "gi");
 const SEARCH_ARTICLES = `articles/search?q=${KEYWORD}`;
 
 let currentPage = PAGES;
@@ -21,7 +21,8 @@ elmNextPages.addEventListener("click", function () {
   if (currentPage == lastPage) {
     return;
   }
-  search(++currentPage)
+  currentPage++;
+  search(currentPage);
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
 });
@@ -29,9 +30,19 @@ elmPreviousPages.addEventListener("click", function () {
   if (currentPage == 1) {
     return;
   }
-  search(--currentPage)
+  currentPage--;
+  search(currentPage);
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
+});
+
+elmPaginationList.addEventListener("click", function (e) {
+  if (e.target.tagName === "SPAN") {
+    currentPage = parseInt(e.target.getAttribute("data-page"));
+    search(currentPage);
+    CURRENT_URL.searchParams.set("page", currentPage);
+    window.history.pushState({}, "", CURRENT_URL);
+  }
 });
 
 // end event
@@ -53,8 +64,8 @@ function search(page) {
     },
   })
     .then((response) => {
-      elmSearchResult.innerText = `tìm thấy ${response.data.meta.total} bài viết với từ khóa ${KEYWORD}`;
-      renderelmresultArticles(response.data.data);   
+      elmSearchResult.innerHTML = `tìm thấy <i>${response.data.meta.total}</i> bài viết với từ khóa <i>"${KEYWORD}"</i>`;
+      renderelmresultArticles(response.data.data);
       lastPage = response.data.meta.last_page;
       renderPaginationButton(page);
       statusButton();
@@ -74,8 +85,12 @@ function renderelmresultArticles(data) {
             </div>
             <div class="what-cap">
             <i class="iconHeart fa-solid fa-heart" id="${data[i].id}"></i>
-             <a href="categori.html?id=${data[i].category.id}&page=1"><span class="color1">${data[i].category.name}</span></a>
-                <h4><a href="single-blog.html?id=${data[i].id}">${highLight(data[i].title)}</a></h4>
+             <a href="categori.html?id=${
+               data[i].category.id
+             }&page=1"><span class="color1">${data[i].category.name}</span></a>
+                <h4><a href="single-blog.html?id=${data[i].id}">${highLight(
+      data[i].title
+    )}</a></h4>
                 <div class="description">
                 <p>${highLight(data[i].description)}</p>
                 </div>
@@ -94,7 +109,7 @@ function renderPaginationButton(indexPage) {
   let samplePageItem = (index, active) => {
     return `
                 <li class="page-item ${active}">
-                    <a class="page-link" href="search.html?keyword=${KEYWORD}&page=${index}">${index}</a>
+                <span class="page-link"  data-page="${index}">${index}</span>
                 </li>`;
   };
   let startindex,
@@ -163,13 +178,12 @@ function statusButton() {
   }
 }
 
-function highLight(text){
-    return text.replaceAll(REGEX_KEYWORD, '<mark class="highlight">$&</mark>');
+function highLight(text) {
+  return text.replaceAll(REGEX_KEYWORD, '<mark class="highlight">$&</mark>');
 }
 // end call api & Pagination for Recent Articles
 
-search(PAGES)
-.then((results) => {
+search(PAGES).then((results) => {
   loadingEffect(true);
   loadFavorite();
 });

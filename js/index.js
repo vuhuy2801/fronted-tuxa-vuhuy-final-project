@@ -309,8 +309,7 @@ const promise1 = getTrendingNews();
 const promise2 = getMostViews();
 const promise3 = getWhatNews();
 const promise4 = getPaginationOfRecentArticles(1);
-getWeather()
-.then(function(data){
+getWeather().then(function (data) {
   renderWidgetWeather(data);
 });
 
@@ -320,8 +319,6 @@ Promise.all([promise1, promise2, promise3, promise4])
     loadFavorite();
   })
   .catch((error) => {});
-
-
 
 function renderWidgetWeather(data) {
   dayjs.locale("vi");

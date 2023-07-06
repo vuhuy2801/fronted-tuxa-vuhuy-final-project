@@ -30,26 +30,37 @@ function isVaildPage() {
 
 //event next & previous pages
 elmNextPages.addEventListener("click", function () {
-  if (currentPage == lastPage) {
+  if (currentPage === lastPage) {
     return;
   }
-  getPaginationOfRecentArticles(++currentPage);
+  currentPage++;
+  getPaginationOfRecentArticles(currentPage);
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
 });
 elmPreviousPages.addEventListener("click", function () {
-  if (currentPage == 1) {
+  if (currentPage === 1) {
     return;
   }
-  getPaginationOfRecentArticles(--currentPage);
+  currentPage--;
+  getPaginationOfRecentArticles(currentPage);
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
+});
+
+elmPaginationList.addEventListener("click", function (e) {
+  if (e.target.tagName === "SPAN") {
+    currentPage = parseInt(e.target.getAttribute("data-page"));
+    getPaginationOfRecentArticles(currentPage);
+    CURRENT_URL.searchParams.set("page", currentPage);
+    window.history.pushState({}, "", CURRENT_URL);
+  }
 });
 
 // end event next & previous pages
 
 //start event headbutton
-recentArticles.addEventListener("click", function (e) {
+elmPaginationList.addEventListener("click", function (e) {
   if (e.target.tagName === "I") {
     clickHeartBtn(e.target);
   }
@@ -65,7 +76,8 @@ function getPaginationOfRecentArticles(page) {
     },
   })
     .then((response) => {
-      elmCategoriName.innerText, elmHeadTitle.innerHTML = response.data.data[0].category.name;
+      elmCategoriName.innerText,
+        (elmHeadTitle.innerHTML = response.data.data[0].category.name);
       renderRecentArticles(response.data.data);
       lastPage = response.data.meta.last_page;
       renderPaginationButton(page);
@@ -105,7 +117,7 @@ function renderPaginationButton(indexPage) {
   let samplePageItem = (index, active) => {
     return `
                 <li class="page-item ${active}">
-                    <a class="page-link" href="categori.html?id=${CATE_ID}&page=${index}">${index}</a>
+                    <span class="page-link"  data-page="${index}">${index}</span>
                 </li>`;
   };
   let startindex,
