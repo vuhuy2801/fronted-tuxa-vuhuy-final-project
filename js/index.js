@@ -207,7 +207,7 @@ function renderArticleMostViews(data) {
 
 // start call api & render What news
 function getWhatNews() {
-  return API_NEWS.get(GET_ALL_WITH_ARTICELS)
+  return API_NEWS.get(GET_ALL_WITH_ARTICLES )
     .then((response) => {
       const data = response.data.data;
       renderWhatNewsNav(data);

@@ -38,6 +38,9 @@ elmPreviousPages.addEventListener("click", function () {
 
 elmPaginationList.addEventListener("click", function (e) {
   if (e.target.tagName === "SPAN") {
+    if(currentPage === parseInt(e.target.getAttribute("data-page"))){
+      return;
+    }
     currentPage = parseInt(e.target.getAttribute("data-page"));
     search(currentPage);
     CURRENT_URL.searchParams.set("page", currentPage);
