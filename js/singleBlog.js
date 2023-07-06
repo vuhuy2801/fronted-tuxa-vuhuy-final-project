@@ -105,15 +105,11 @@ function renderPostRelated(data) {
 
 // end render postRelated
 
-function timeAgo(date) {
-  dayjs.extend(dayjs_plugin_relativeTime);
-  dayjs.locale("vi");
-  const customDate = dayjs(date);
-  return customDate.fromNow();
-}
 
 getPostRelated().then(() => {
   loadingEffect(true);
+  updateFavoriteNav();
 });
-getNavigation();
 getPostContent();
+
+

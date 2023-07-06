@@ -1,6 +1,6 @@
 let elmPreviousPages = document.querySelector("#previousPages");
 let elmNextPages = document.querySelector("#nextPages");
-let recentArticles = document.querySelector("#recentArticles");
+let elmresultArticles = document.querySelector("#resultArticles");
 let elmPaginationList = document.querySelector("#paginationList");
 let elmSearchResult = document.querySelector("#searchResult h3");
 let lastPage;
@@ -22,9 +22,6 @@ elmNextPages.addEventListener("click", function () {
     return;
   }
   search(++currentPage)
-  .then((results) => {
-    pavoritePosts();
-  });
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
 });
@@ -33,14 +30,19 @@ elmPreviousPages.addEventListener("click", function () {
     return;
   }
   search(--currentPage)
-  .then((results) => {
-    pavoritePosts();
-  });
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
 });
 
 // end event
+
+//start event headbutton
+elmresultArticles.addEventListener("click", function (e) {
+  if (e.target.tagName === "I") {
+    clickHeartBtn(e.target);
+  }
+});
+//end event headbutton
 
 // call api & search for Recent Articles
 function search(page) {
@@ -51,9 +53,8 @@ function search(page) {
     },
   })
     .then((response) => {
-      console.log(response);
       elmSearchResult.innerText = `tìm thấy ${response.data.meta.total} bài viết với từ khóa ${KEYWORD}`;
-      renderRecentArticles(response.data.data);   
+      renderelmresultArticles(response.data.data);   
       lastPage = response.data.meta.last_page;
       renderPaginationButton(page);
       statusButton();
@@ -63,7 +64,7 @@ function search(page) {
       console.log(error);
     });
 }
-function renderRecentArticles(data) {
+function renderelmresultArticles(data) {
   let str = "";
   for (let i = 0; i < data.length; i++) {
     str += ` 
@@ -81,7 +82,7 @@ function renderRecentArticles(data) {
             </div>
         </div>`; // render articles
   }
-  recentArticles.innerHTML = str;
+  elmresultArticles.innerHTML = str;
 }
 
 function renderPaginationButton(indexPage) {
@@ -169,6 +170,6 @@ function highLight(text){
 
 search(PAGES)
 .then((results) => {
-  pavoritePosts();
   loadingEffect(true);
+  loadFavorite();
 });

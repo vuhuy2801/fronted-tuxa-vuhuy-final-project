@@ -54,25 +54,24 @@ function renderRecentArticles(data) {
   recentArticles.innerHTML = str;
 }
 
-function eventOverride(){
-  let elmHeartList = document.querySelectorAll(".iconHeart");
-  elmHeartList.forEach((element) => {
-    // add event button heart
-    element.addEventListener("click", function () {
-      let divElement = this.closest(".single-recent.mb-100");
-      divElement.remove();
-      if(favoritePostList.length == 0){
-        elmCategoriName.innerHTML = "Chưa có bài viết nào yêu thích";
-      }
-    });
-  });
-}
+
+
+recentArticles.addEventListener("click", function (e) {
+  if (e.target.tagName === "I") {
+    clickHeartBtn(e.target); // update local stoage
+    let divElement = e.target.closest(".single-recent.mb-100");
+    divElement.remove();
+    if(favoritePostList.length == 0){
+      elmCategoriName.innerHTML = "Chưa có bài viết nào yêu thích";
+    }
+   
+  }
+});
 
 getFavoritePost()
 .then(() => {
     renderRecentArticles(dataPost);
-    pavoritePosts();
-    eventOverride();
+    loadFavorite();
   })
   .catch((error) => {
     console.log(error);

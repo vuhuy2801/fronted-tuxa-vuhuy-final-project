@@ -10,6 +10,7 @@ let recentArticles = document.querySelector("#recentArticles");
 let elmCurrentPage = document.querySelector("#currentPage");
 let elmWidgetWeather = document.querySelector(".widget");
 let elmRecentArticlesLoading = document.querySelector("#loadingRecentArticles");
+let elmTrendingArea = document.querySelector(".trending-area");
 let countLoadMore = 0;
 
 //start event loadmore Articles
@@ -18,7 +19,7 @@ elmBtnLoadMore.addEventListener("click", function () {
   elmRecentArticlesLoading.classList.remove("d-none");
   getPaginationOfRecentArticles(countLoadMore)
     .then((data) => {
-      pavoritePosts(); // add event click heartbutton
+      //pavoritePosts(); // add event click heartbutton
       elmRecentArticlesLoading.classList.add("d-none");
     })
     .catch((error) => {
@@ -27,6 +28,33 @@ elmBtnLoadMore.addEventListener("click", function () {
 });
 
 // end loadmore Articles
+
+//start event headbutton
+elmTrendingArea.addEventListener("click", function (e) {
+  if (e.target.tagName === "I") {
+    clickHeartBtn(e.target);
+  }
+});
+
+elmMostViews.addEventListener("click", function (e) {
+  if (e.target.tagName === "I") {
+    clickHeartBtn(e.target);
+  }
+});
+
+elmNavTabContents.addEventListener("click", function (e) {
+  if (e.target.tagName === "I") {
+    clickHeartBtn(e.target);
+  }
+});
+
+recentArticles.addEventListener("click", function (e) {
+  if (e.target.tagName === "I") {
+    clickHeartBtn(e.target);
+  }
+});
+
+//end event headbutton
 
 // start call api & render trendingNews
 function getTrendingNews() {
@@ -174,12 +202,7 @@ function renderArticleMostViews(data) {
   }
   elmMostViews.innerHTML = str;
 }
-function timeAgo(date) {
-  dayjs.extend(dayjs_plugin_relativeTime);
-  dayjs.locale("vi");
-  const customDate = dayjs(date);
-  return customDate.fromNow();
-}
+
 // end call api & render MostViews
 
 // start call api & render What news
@@ -291,7 +314,7 @@ getWeather();
 Promise.all([promise1, promise2, promise3, promise4])
   .then((results) => {
     loadingEffect(true);
-    pavoritePosts();
+    loadFavorite();
   })
   .catch((error) => {});
 

@@ -33,13 +33,7 @@ elmNextPages.addEventListener("click", function () {
   if (currentPage == lastPage) {
     return;
   }
-  getPaginationOfRecentArticles(++currentPage)
-    .then((data) => {
-      pavoritePosts();
-    })
-    .catch((error) => {
-      // Xử lý khi Promise bị từ chối
-    });
+  getPaginationOfRecentArticles(++currentPage);
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
 });
@@ -47,18 +41,20 @@ elmPreviousPages.addEventListener("click", function () {
   if (currentPage == 1) {
     return;
   }
-  getPaginationOfRecentArticles(--currentPage)
-    .then((data) => {
-      pavoritePosts();
-    })
-    .catch((error) => {
-      // Xử lý khi Promise bị từ chối
-    });
+  getPaginationOfRecentArticles(--currentPage);
   CURRENT_URL.searchParams.set("page", currentPage);
   window.history.pushState({}, "", CURRENT_URL);
 });
 
-// end event
+// end event next & previous pages
+
+//start event headbutton
+recentArticles.addEventListener("click", function (e) {
+  if (e.target.tagName === "I") {
+    clickHeartBtn(e.target);
+  }
+});
+//end event headbutton
 
 // call api & Pagination for Recent Articles
 function getPaginationOfRecentArticles(page) {
@@ -179,8 +175,7 @@ function statusButton() {
 }
 // end call api & Pagination for Recent Articles
 
-getPaginationOfRecentArticles(PAGES)
-.then((results) => {
-  pavoritePosts();
+getPaginationOfRecentArticles(PAGES).then((results) => {
   loadingEffect(true);
+  loadFavorite();
 });
