@@ -1,17 +1,24 @@
 let loadingListElm = document.querySelectorAll(".row.loadingEffect");
 let favoritePostList = JSON.parse(localStorage.getItem("favoritePosts"));
+
 let elmFavoriteNav;
 let elmHaderInfoLeft = document.querySelector(".header-info-left");
 let elmHeadTitle = document.querySelector("head title");
 
+const ACCESS_TOKEN = JSON.parse(localStorage.getItem("ACCESS_TOKEN"));
 const CATE_GET_ALL_API = "/categories_news?limit=100";
 const ARTICLES_GET_ALL = "/articles?limit=10";
 const ARTICLES_GET_MOST_VIEW = "/articles/popular?limit=5";
 const GET_ALL_WITH_ARTICLES = "/categories_news/articles?limit_cate=5&limit=4";
 const PAGINATION_OF_ARTICLES = "/articles?limit=6&page=";
+const CURRENT_USER_INFO = "/auth/me";
+const LOGIN = "/auth/login";
+const REGISTER = "/users/register";
+const UPDATE_CURRENT_USER_INFO = "/auth/update";
+const CHANGE_PASSWORD = "/auth/change-password";
 
 const API_NEWS = axios.create({
-  baseURL: "https://apiforlearning.zendvn.com/api/v2",
+  baseURL: "http://apiforlearning.zendvn.com/api/v2",
   headers: { "X-Custom-Header": "foobar" },
 });
 
@@ -65,7 +72,6 @@ function loadFavorite() {
 
 function updateFavorite(element, textStatus) {
   elmFavoriteNav = document.querySelector(".favoriteNav");
-  console.log(elmFavoriteNav);
   elmFavoriteNav.innerHTML = `Bài Viết Yêu Thích (${favoritePostList.length})`;
 
   if (element == undefined) {
@@ -196,4 +202,9 @@ function renderWidgetWeatherNav(data, textConditon) {
   `;
 }
 
-// end weather
+function logout(){
+  localStorage.removeItem("ACCESS_TOKEN");
+  window.location.href = "/index.html";
+}
+
+

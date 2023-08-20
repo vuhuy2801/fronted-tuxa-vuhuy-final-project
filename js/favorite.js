@@ -55,7 +55,7 @@ function renderRecentArticles(data) {
 recentArticles.addEventListener("click", function (e) {
   if (e.target.tagName === "I") {
     clickHeartBtn(e.target); // update local stoage
-    let divElement = e.target.closest(".single-recent.mb-100");
+    let divElement = e.target.closest(".form-control");
     divElement.remove();
     if (favoritePostList.length == 0) {
       elmCategoriName.innerHTML = "Chưa có bài viết nào yêu thích";

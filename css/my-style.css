@@ -175,3 +175,27 @@ div.right-panel
 .highlight{
   background-color: gold;
 }
+
+.forgot-password{
+  color: #212529;
+}
+
+.forgot-password:hover{
+  color: #212529;
+  text-decoration: underline;
+}
+
+.login-form form, .register-form form{
+  width: 100%;
+}
+
+.form-outline {
+  position: relative;
+}
+
+form i {
+  position: absolute;
+  top: 43px;
+  right: 15px;
+  cursor: pointer;
+}

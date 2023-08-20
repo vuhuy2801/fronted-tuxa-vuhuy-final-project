@@ -11,7 +11,7 @@ elmSearch.addEventListener("submit", () => {
 
 // start call api & render navigation
 function getNavigation() {
-  API_NEWS.get(CATE_GET_ALL_API)
+  return API_NEWS.get(CATE_GET_ALL_API)
     .then((response) => {
       renderNavigation(response.data.data);
       /* 2. slick Nav */
@@ -30,6 +30,21 @@ function getNavigation() {
     });
 }
 
+function getCurrentUserInfo() {
+  return API_NEWS.get(CURRENT_USER_INFO, {
+    headers: {
+      Authorization: `Bearer ${ACCESS_TOKEN}`,
+    },
+  })
+    .then((response) => {
+      renderCurrentUserInfo(true, response.data.data);
+      return response.data.data;
+    })
+    .catch((error) => {
+      renderCurrentUserInfo(false);
+    });
+}
+
 function renderNavigation(data) {
   let strMenu = `<li><a href="index.html">Trang chủ</a></li>`;
   let strSubMenu = "";
@@ -44,9 +59,41 @@ function renderNavigation(data) {
     }
   }
   strSubMenu += `</ul>   
-    </li><li><a href="favorite.html" class="favoriteNav">Bài viết yêu thích</a></li>`;
+    </li>
+    <li><a href="favorite.html" class="favoriteNav">Bài viết yêu thích</a></li>
+    `;
   elmNavigation.innerHTML = strMenu + strSubMenu;
+}
+function renderCurrentUserInfo(status, data) {
+  let str = "";
+  if (status) {
+    str = `
+    <li><a href="#">${data.name}</a>
+    <ul class="submenu">
+    <li><a href="profile.html">Thông tin tài khoản</a></li>
+    <li><a href="change-password.html">Thay đổi mật khẩu</a></li>
+    <li><a href="addpost.html">Thêm bài viết</a></li>
+    <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+    </ul>
+    </li> 
+    `;
+  } else {
+    str = `
+    <li><a href="#">Tài Khoản</a>
+    <ul class="submenu">
+    <li><a href="login.html">Đăng nhập</a></li>
+    <li><a href="register.html">Đăng ký</a></li>
+    </ul>
+    </li> 
+    `;
+  }
+  elmNavigation.innerHTML += str;
 }
 // end call api & render navigation
 
-getNavigation();
+const PROMISE_NAV = getNavigation();
+
+PROMISE_NAV.then(() => {
+  getCurrentUserInfo();
+  loadFavorite();
+});
