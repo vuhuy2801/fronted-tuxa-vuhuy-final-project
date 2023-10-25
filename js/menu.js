@@ -32,7 +32,6 @@ function getNavigation() {
         });
 }
 
-
 function renderNavigation(data) {
     let strMenu = `<li><a href="index.html">Trang chủ</a></li>`;
     let strSubMenu = "";
@@ -60,7 +59,8 @@ function renderCurrentUserInfo(status, data) {
     <ul class="submenu">
     <li><a href="profile.html">Thông tin tài khoản</a></li>
     <li><a href="change-password.html">Thay đổi mật khẩu</a></li>
-    <li><a href="addpost.html">Thêm bài viết</a></li>
+    <li><a href="admin-create-post.html">Thêm bài viết</a></li>
+    <li><a href="admin-manager-post.html">Quản lý bài viết</a></li>
     <li><a href="#" onclick="logout()">Đăng xuất</a></li>
     </ul>
     </li> 

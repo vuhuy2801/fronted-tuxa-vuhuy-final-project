@@ -5,7 +5,7 @@ let elmFavoriteNav;
 let elmHaderInfoLeft = document.querySelector(".header-info-left");
 let elmHeadTitle = document.querySelector("head title");
 
-const ACCESS_TOKEN = JSON.parse(localStorage.getItem("ACCESS_TOKEN"));
+const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
 const CATE_GET_ALL_API = "/categories_news?limit=100";
 const ARTICLES_GET_ALL = "/articles?limit=10";
 const ARTICLES_GET_MOST_VIEW = "/articles/popular?limit=5";
@@ -16,6 +16,9 @@ const LOGIN = "/auth/login";
 const REGISTER = "/users/register";
 const UPDATE_CURRENT_USER_INFO = "/auth/update";
 const CHANGE_PASSWORD = "/auth/change-password";
+const CREATE_POST = "/articles/create";
+const MY_POSTS = "/articles/my-articles";
+const POST = "/articles/";
 
 const API_NEWS = axios.create({
     baseURL: "http://apiforlearning.zendvn.com/api/v2",
@@ -221,3 +224,16 @@ function getCurrentUserInfo() {
         },
     });
 }
+
+
+function getCurrentUser() {
+    API_NEWS.get(CURRENT_USER_INFO, {
+        headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+    })
+        .then((response) => {})
+        .catch((error) => {
+            window.location.href = "/index.html";
+        });
+} 

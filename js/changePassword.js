@@ -83,16 +83,5 @@ function alertForm(data, status) {
   });
 }
 
-function getCurrentUser() {
-  API_NEWS.get(CURRENT_USER_INFO, {
-    headers: {
-      Authorization: `Bearer ${ACCESS_TOKEN}`,
-    },
-  })
-    .then((response) => {})
-    .catch((error) => {
-      window.location.href = "/index.html";
-    });
-}
 
 getCurrentUser();

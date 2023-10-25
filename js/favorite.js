@@ -2,40 +2,40 @@ let recentArticles = document.querySelector("#recentArticles");
 let elmCategoriName = document.querySelector("#categoriName h3");
 let dataPost = [];
 if (favoritePostList.length !== 0) {
-  elmCategoriName.innerHTML = "Bài viết yêu thích";
+    elmCategoriName.innerHTML = "Bài viết yêu thích";
 }
 
 // call api & getFavoritePost
 function getFavoritePost() {
-  return new Promise((resolve, reject) => {
-    const promises = [];
+    return new Promise((resolve, reject) => {
+        const promises = [];
 
-    for (const id in favoritePostList) {
-      const promise = API_NEWS.get(`/articles/${favoritePostList[id]}`)
-        .then((response) => {
-          dataPost.push(response.data.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        for (const id in favoritePostList) {
+            const promise = API_NEWS.get(`/articles/${favoritePostList[id]}`)
+                .then((response) => {
+                    dataPost.push(response.data.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
-      promises.push(promise);
-    }
+            promises.push(promise);
+        }
 
-    Promise.all(promises)
-      .then(() => {
-        // Tất cả các yêu cầu đã hoàn thành
-        resolve(dataPost);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+        Promise.all(promises)
+            .then(() => {
+                // Tất cả các yêu cầu đã hoàn thành
+                resolve(dataPost);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 }
 function renderRecentArticles(data) {
-  let str = "";
-  for (let i = 0; i < data.length; i++) {
-    str += ` 
+    let str = "";
+    for (let i = 0; i < data.length; i++) {
+        str += ` 
         <div class="single-recent mb-100 ">
             <div class="what-img">
                 <img src="${data[i].thumb}" alt="">
@@ -48,26 +48,27 @@ function renderRecentArticles(data) {
                 </div>
             </div>
         </div>`; // render articles
-  }
-  recentArticles.innerHTML = str;
+    }
+    recentArticles.innerHTML = str;
 }
 
 recentArticles.addEventListener("click", function (e) {
-  if (e.target.tagName === "I") {
-    clickHeartBtn(e.target); // update local stoage
-    let divElement = e.target.closest(".form-control");
-    divElement.remove();
-    if (favoritePostList.length == 0) {
-      elmCategoriName.innerHTML = "Chưa có bài viết nào yêu thích";
+    if (e.target.tagName === "I") {
+        clickHeartBtn(e.target); // update local stoage
+        let divElement = e.target.closest(".single-recent");
+        divElement.remove();
+        if (favoritePostList.length == 0) {
+            elmCategoriName.innerHTML = "Chưa có bài viết nào yêu thích";
+        }
     }
-  }
 });
 
 getFavoritePost()
-  .then(() => {
-    renderRecentArticles(dataPost);
-    loadFavorite();
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    .then(() => {
+        renderRecentArticles(dataPost);
+        loadFavorite();
+        loadingEffect(true);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
