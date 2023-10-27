@@ -11,6 +11,9 @@ elmBtnUpdate.addEventListener("click", () => {
     updateInfo();
 });
 
+if(!ACCESS_TOKEN){
+    window.location.href = "/index.html";
+  }
 // event end
 
 function updateInfo() {
@@ -29,11 +32,13 @@ function updateInfo() {
     )
         .then((response) => {
             alertForm("", true);
+              getCurrentUser();
         })
         .catch((error) => {
             console.log(error);
             alertForm(error.response.data.errors);
         });
+      
 }
 
 function alertForm(data, status) {
@@ -61,14 +66,14 @@ function alertForm(data, status) {
     });
 }
 
+function renderCurrentInfo(){
+    if(currentUserInfo){
+        elmEmailInput.value = currentUserInfo.email;
+        elmNameInput.value = currentUserInfo.name;
+        elmPhoneInput.value = currentUserInfo.phone;
+        elmAddressInput.value = currentUserInfo.address;
+    }
+}
 
 
-getCurrentUser();
-
-getCurrentUserInfo().then((response) => {
-    const RES_DATA = response.data.data;
-    elmEmailInput.value = RES_DATA.email;
-    elmNameInput.value = RES_DATA.name;
-    elmPhoneInput.value = RES_DATA.phone;
-    elmAddressInput.value = RES_DATA.address;
-});
+renderCurrentInfo();

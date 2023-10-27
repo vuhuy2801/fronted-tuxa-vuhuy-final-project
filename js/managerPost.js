@@ -1,6 +1,10 @@
 let elmPostList = document.querySelector("#postList");
 let elmloadingPost = document.querySelector("#loadingPost");
 
+if(!ACCESS_TOKEN){
+    window.location.href = "/index.html";
+  }
+
 function notiStatus(text, status) {
     Toastify({
         text: text,
@@ -19,8 +23,6 @@ function notiStatus(text, status) {
 
 function editArticle(articleId) {
     console.log("sửa bài viết" + articleId);
-    // Thực hiện sửa bài viết với ID là articleId
-    // Ví dụ: hiển thị form sửa bài viết và điền dữ liệu cũ
 }
 
 function deleteArticle(articleId, e) {
@@ -91,8 +93,6 @@ function setViewArticle(articleId, e) {
     console.log(
         e.checked ? "Hiển thị bài viết" + articleId : "Ẩn bài viết " + articleId
     );
-    // Thực hiện xóa bài viết với ID là articleId
-    // Ví dụ: hiển thị xác nhận trước khi xóa và gửi yêu cầu xóa đến máy chủ
 }
 
 function getPostList() {

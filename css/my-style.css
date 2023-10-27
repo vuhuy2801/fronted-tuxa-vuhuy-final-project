@@ -272,3 +272,31 @@ form i {
 .search-box input {
     width: 150px !important;
 }
+
+.sub-comment {
+    padding: 20px 0px 0px 90px;
+}
+
+.sub-comment .user {
+    width: 100%;
+    padding: 10px;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+}
+
+.sub-comment .user .desc{
+    flex-grow: 1;
+}
+
+
+.reply-btn{
+    cursor: pointer;
+}
+.reply-btn:hover{
+    color: #fc3f00;
+}
+
+.comments-area .comment-list{
+    padding: 0px;
+    margin-top: 10px;
+}

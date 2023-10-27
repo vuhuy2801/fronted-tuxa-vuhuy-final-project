@@ -82,7 +82,7 @@ function renderCurrentUserInfo(status, data) {
 const PROMISE_NAV = getNavigation();
 
 PROMISE_NAV.then(() => {
-    getCurrentUserInfo()
+    getCurrentUser()
         .then((response) => {
             renderCurrentUserInfo(true, response.data.data);
             return response.data.data;

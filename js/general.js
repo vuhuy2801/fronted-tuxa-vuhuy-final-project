@@ -1,5 +1,7 @@
 let loadingListElm = document.querySelectorAll(".row.loadingEffect");
 let favoritePostList = JSON.parse(localStorage.getItem("favoritePosts"));
+let commentList = JSON.parse(localStorage.getItem("commentList"));
+let currentUserInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
 
 let elmFavoriteNav;
 let elmHaderInfoLeft = document.querySelector(".header-info-left");
@@ -217,23 +219,26 @@ function logout() {
     window.location.href = "/index.html";
 }
 
-function getCurrentUserInfo() {
+
+
+function getCurrentUser() {
     return API_NEWS.get(CURRENT_USER_INFO, {
         headers: {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
-    });
-}
-
-
-function getCurrentUser() {
-    API_NEWS.get(CURRENT_USER_INFO, {
-        headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
     })
-        .then((response) => {})
+        .then((response) => {
+            console.log(response.data.data);
+            localStorage.setItem(
+                "currentUserInfo",
+                JSON.stringify(response.data.data)
+            );
+            return response;
+        })
         .catch((error) => {
-            window.location.href = "/index.html";
+            localStorage.removeItem("currentUserInfo");
+            localStorage.removeItem("ACCESS_TOKEN");
+            // window.location.href = "/index.html";
+            return error;
         });
-} 
+}

@@ -6,7 +6,7 @@ let elmAlertForm = document.getElementById("alertForm");
 let elmLoginForm = document.querySelector(".login-form");
 let elmTogglePassword = document.getElementById("togglePassword");
 
-const CURRENT_LOGIN_INFO = (localStorage.getItem("currentLogin"));
+const CURRENT_LOGIN_INFO = JSON.parse(localStorage.getItem("currentLogin"));
 
 // event
 elmBtnLogin.addEventListener("click", () => {
@@ -75,17 +75,4 @@ function saveInfoLogin(data) {
     localStorage.setItem("ACCESS_TOKEN", data); // save token user
 }
 
-function getCurrentUser() {
-    API_NEWS.get(CURRENT_USER_INFO, {
-        headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-    })
-        .then((response) => {
-            window.location.href = "/index.html";
-        })
-        .catch((error) => {});
-}
-
-getCurrentUser();
 autoFillForm();

@@ -6,7 +6,6 @@ let elmTitleInput = document.querySelector("#titleInput");
 let elmDescriptionInput = document.querySelector("#descriptionInput");
 let elmContentInput = document.querySelector("#contentInput");
 let elmBtnCreate = document.querySelector("#btnCreate");
-// let elmCreatePostForm = document.querySelector("#createPostForm");
 let editor;
 
 let formData = {
@@ -16,6 +15,18 @@ let formData = {
     thumb: "",
     category_id: 1,
 };
+
+
+if(!ACCESS_TOKEN){
+    window.location.href = "/index.html";
+  }
+
+elmPictureUrlInput.addEventListener("change", () => {
+    elmImagePreview.innerHTML = `<img src="${elmPictureUrlInput.value}" alt="">`;
+});
+
+
+
 
 function setFormCreatePost(
     srcImagePreview,
@@ -41,9 +52,7 @@ ClassicEditor.create(document.querySelector("textarea"))
         console.error(error);
     });
 
-elmPictureUrlInput.addEventListener("change", () => {
-    elmImagePreview.innerHTML = `<img src="${elmPictureUrlInput.value}" alt="">`;
-});
+
 
 function setLoadingBtnRandomImg(isLoading) {
     if (isLoading) {

@@ -5,6 +5,11 @@ let elmBtnUpdate = document.getElementById("btnUpdate");
 let elmArletForm = document.getElementById("alertForm");
 let elmChangepwForm = document.querySelector(".changepw-form");
 
+if(!ACCESS_TOKEN){
+  window.location.href = "/index.html";
+}
+
+
 // event
 elmBtnUpdate.addEventListener("click", () => {
   changePassword();
